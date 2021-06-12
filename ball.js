@@ -18,6 +18,8 @@ class Ball {
 
 		if (this.loc.dist(player.loc) > 20) this.elastic(); this.friction();
 
+		this.atSide();
+
 		this.vel.add(this.acl);
 		this.loc.add(this.vel);
 
@@ -40,6 +42,20 @@ class Ball {
 	applyForce(f) {
 		let force = f.copy().div(this.mass);
 		this.acl.add(force);
+	}
+
+	atSide() {
+		// if at left or right bounce off that side
+		if (this.loc.x + xr < this.size/2 + wallr ||
+			xr - this.loc.x < this.size/2 + wallr   ) {
+			this.vel.x *= -wall_bounce;
+		}
+
+		// if at top or bottom bounce off that side
+		if (this.loc.y + yr < this.size/2 + wallr ||
+			yr - this.loc.y < this.size/2 + wallr   ) {
+			this.vel.y *= -wall_bounce;
+		}
 	}
 
 	draw() {

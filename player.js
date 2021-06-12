@@ -9,6 +9,7 @@ class Player {
 		this.health = 0.6;
 
 		this.thrust = 6;
+		this.moving = false;
 		this.dash = 25;
 		this.dash_vec = createVector();
 		this.dash_time = 5;
@@ -19,6 +20,7 @@ class Player {
 	}
 
 	update() {
+		this.moving = false;
 		this.controls();
 
 		if (this.dash_count > 0) {
@@ -31,20 +33,24 @@ class Player {
 
 	controls() {
 		// W is up
-		if (keyIsDown(87)) {
+		if (keyIsDown(87) && !this.atTop()) {
 			this.loc.y -= this.thrust;
+			this.moving = true;
 		}
 		// S is down
-		if (keyIsDown(83)) {
+		if (keyIsDown(83) && !this.atBottom()) {
 			this.loc.y += this.thrust;
+			this.moving = true;
 		}
 		// A is left
-		if (keyIsDown(65)) {
+		if (keyIsDown(65) && !this.atLeft()) {
 			this.loc.x -= this.thrust;
+			this.moving = true;
 		}
 		// D is down
-		if (keyIsDown(68)) {
+		if (keyIsDown(68) && !this.atRight()) {
 			this.loc.x += this.thrust;
+			this.moving = true;
 		}
 
 		// dash when you click
@@ -55,11 +61,27 @@ class Player {
 			this.dash_count = this.dash_time;
 			this.dash_running = true;
 			this.dash_recharge = 30;
+			this.moving = true;
 		}
 	}
 
-	dash() {
+	atLeft() {
+		return this.loc.x + xr < this.size/2 + wallr;
+	}
+	atRight() {
+		return xr - this.loc.x < this.size/2 + wallr;
+	}
+	atTop() {
+		return this.loc.y + yr < this.size/2 + wallr;
+	}
+	atBottom() {
+		return yr - this.loc.y < this.size/2 + wallr;
+	}
 
+	touchingShot() {
+		for (let shot of shots) {
+			return this.loc.dist(shot.loc) < this.size/2 + shots.size/2;
+		}
 	}
 
 	draw() {
