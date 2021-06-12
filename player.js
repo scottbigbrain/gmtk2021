@@ -6,7 +6,7 @@ class Player {
 		this.acl = createVector(0,0);
 
 		this.size = 20;
-		this.health = 0.6;
+		this.health = 0.8;
 
 		this.thrust = 6;
 		this.moving = false;
@@ -22,6 +22,14 @@ class Player {
 	update() {
 		this.moving = false;
 		this.controls();
+
+		if (this.touchingShot() && this.health > 0) {
+			this.health -= 0.2;
+			fill(255);
+			noStroke();
+			rectMode(CENTER);
+			rect(0, 0, 2*xr, 2*yr);
+		}
 
 		if (this.dash_count > 0) {
 			this.dash_count--;
@@ -80,8 +88,9 @@ class Player {
 
 	touchingShot() {
 		for (let shot of shots) {
-			return this.loc.dist(shot.loc) < this.size/2 + shots.size/2;
+			if (shot.touchingPlayer()) return true;
 		}
+		return false
 	}
 
 	draw() {

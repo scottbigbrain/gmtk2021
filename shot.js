@@ -2,7 +2,6 @@ class Shot {
 	
 	constructor(x, y, ang) {
 		this.loc = createVector(x, y);
-		console.log("hi");
 		this.vel = p5.Vector.fromAngle(ang, 16);
 		this.size = 10;
 	}

@@ -8,7 +8,7 @@ class Ball {
 
 		this.mass = 1;
 		this.size = 30;
-		this.k_p = 0.066
+		this.k_p = 0.05
 		this.k = player.health*this.k_p;
 		this.mu = 0.4;
 	}
