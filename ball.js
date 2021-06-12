@@ -7,11 +7,15 @@ class Ball {
 
 
 		this.mass = 1;
-		this.k = 0.05;
-		this.mu = 0.5;
+		this.size = 30;
+		this.k_p = 0.066
+		this.k = player.health*this.k_p;
+		this.mu = 0.4;
 	}
 
 	update() {
+		this.k = player.health*this.k_p;
+
 		if (this.loc.dist(player.loc) > 20) this.elastic(); this.friction();
 
 		this.vel.add(this.acl);
@@ -46,7 +50,7 @@ class Ball {
 		fill(255, 132, 10);
 		strokeWeight(1);
 		stroke(200, 100, 100);
-		circle(this.loc.x, this.loc.y, 15);
+		circle(this.loc.x, this.loc.y, this.size);
 	}
 
 }

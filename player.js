@@ -5,7 +5,10 @@ class Player {
 		this.vel = createVector(0,0);
 		this.acl = createVector(0,0);
 
-		this.thrust = 5;
+		this.size = 20;
+		this.health = 0.6;
+
+		this.thrust = 6;
 		this.dash = 25;
 		this.dash_vec = createVector();
 		this.dash_time = 5;
@@ -47,7 +50,7 @@ class Player {
 		// dash when you click
 		if (mouseIsPressed && this.dash_ready==true && !this.dash_running && this.dash_recharge<0) {
 			let m = createVector(-(width/2-mouseX), -(height/2-mouseY));
-			let ang = m.sub(this.loc).heading();
+			let ang = m.heading();
 			this.dash_vec = p5.Vector.fromAngle(ang, this.dash);
 			this.dash_count = this.dash_time;
 			this.dash_running = true;
@@ -62,6 +65,7 @@ class Player {
 	draw() {
 		fill(220);
 		stroke(200);
+		strokeWeight(1);
 		circle(this.loc.x, this.loc.y, 20);
 	}
 
