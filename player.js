@@ -1,7 +1,7 @@
 class Player {
 	
 	constructor() {
-		this.loc = createVector(60,0);
+		this.loc = createVector(0,0);
 		this.vel = createVector(0,0);
 		this.acl = createVector(0,0);
 
@@ -31,7 +31,7 @@ class Player {
 			rect(0, 0, 2*xr, 2*yr);
 		}
 
-		if (this.health <= 0.91) {
+		if (this.health <= 0.91 && this.health > 0.09) {
 			let drop = this.touchingDrop();
 			if (drop != undefined) {
 				this.health += 0.1;
@@ -44,6 +44,7 @@ class Player {
 			if (this.dash_count == 0) this.dash_running = false;
 			this.loc.add(this.dash_vec);
 			this.drawDash();
+			if (this.atSide()) this.loc.sub(this.dash_vec);
 		}
 		this.dash_recharge--;
 	}
@@ -94,6 +95,9 @@ class Player {
 	atBottom() {
 		return yr - this.loc.y < this.size/2 + wallr;
 	}
+	atSide() {
+		return this.atLeft() || this.atRight() || this.atTop() || this.atBottom();
+	}
 
 	touchingShot() {
 		for (let shot of shots) {
@@ -111,9 +115,9 @@ class Player {
 	}
 
 	drawDash() {
-		let v = this.loc.copy().sub(this.dash_vec);
+		let v = this.loc.copy().sub(this.dash_vec.copy().mult(2));
 		stroke(255, 200);
-		strokeWeight(5);
+		strokeWeight(6);
 		line(this.loc.x, this.loc.y, v.x, v.y);
 	}
 

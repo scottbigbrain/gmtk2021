@@ -5,6 +5,7 @@ let xr = 600;
 let yr = 400;
 let wallr = 15;
 let wall_bounce = 0.6;
+let game_started = false;
 
 let back;
 
@@ -16,9 +17,7 @@ let monsters = [];
 let shots = [];
 let drops = [];
 
-function preload() {
-	back = loadImage("assets/background.png");
-}
+let d_emitter;
 
 
 function setup() {
@@ -29,15 +28,18 @@ function setup() {
 	camera = new Camera();
 	ball = new Ball();
 
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 3; i++) {
 		monsters.push(new Monster());
 	}
+	d_emitter = new Emitter(0,0);
 }
 
 function draw() {
 	background(100);
 	translate(width/2-camera.loc.x, height/2-camera.loc.y);
 	scale(scaling);
+
+	if (game_started) {
 
 	ball.update();
 	for (let monster of monsters) {
@@ -48,6 +50,10 @@ function draw() {
 	}
 	player.update();
 	camera.update();
+	d_emitter.update();
+
+	}
+
 
 	ball.draw();
 	player.draw();
@@ -59,6 +65,11 @@ function draw() {
 	}
 	for (let drop of drops) {
 		drop.draw();
+	}
+	for (let particle of d_emitter.particles) {
+		fill(5, 11, 46, particle.lifetime);
+		noStroke();
+		circle(particle.pos.x, particle.pos.y, particle.r);
 	}
 
 	stroke(10);
@@ -85,12 +96,24 @@ function draw() {
 	text("Score: "+score, camera.loc.x-width/2+40, camera.loc.y-height/2+40);
 
 
+	if (!game_started) {
+		fill(220, 230, 255);
+		stroke(100);
+		strokeWeight(1.5);
+		textSize(32);
+		textAlign(CENTER);
+		text("Press any key to start game", camera.loc.x, camera.loc.y);
+		game_started = keyIsPressed;
+	}
+
+
 
 	// kill monsters touched by the ball and add up the score and drop packs
 	let dead = monsters.filter(m => m.touchingBall());
 	monsters = monsters.filter(m => !m.touchingBall());
 	score += dead.length;
 	doDrops(dead);
+	doDeaths(dead);
 
 	// get rid of shots touching the walls or ball or player
 	shots = shots.filter(s => !s.atSide() && !s.touchingBall() && !s.touchingPlayer());
@@ -98,7 +121,8 @@ function draw() {
 	// remove expired drops
 	drops = drops.filter(d => d.lifetime > 0);
 
-	if (frameCount%120==0 && monsters.length<60) monsters.push(new Monster());
+	let chance = map(monsters.length, 0, 40, 0.015, 0);
+	if (random()<chance && monsters.length<40) monsters.push(new Monster());
 
 	if (player.health < 0.1) {
 		fill(220, 230, 255);
@@ -118,12 +142,16 @@ function draw() {
 
 function doDrops(dead) {
 	for (let d of dead) {
-		if (random() < 0.4) {
-			let num = floor(random(1, 4));
-			for (let i = 0; i < num; i++) {
-				drops.push(new Drop(d.loc.add(p5.Vector.random2D().mult(random(40)))));
-			}
+		if (random() < 0.35) {
+			drops.push(new Drop(d.loc.add(p5.Vector.random2D().mult(random(40)))));
 		}
+	}
+}
+
+function doDeaths(dead) {
+	for (let d of dead) {
+		d_emitter.position = d.loc.copy();
+		d_emitter.emit(random(5, 15));
 	}
 }
 

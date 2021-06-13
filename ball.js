@@ -1,8 +1,8 @@
 class Ball {
 	
 	constructor() {
-		this.loc = createVector(0,0);
-		this.vel = createVector(0,20);
+		this.loc = createVector(-80,0);
+		this.vel = createVector(0,40);
 		this.acl = createVector(0,0);
 
 
@@ -11,6 +11,8 @@ class Ball {
 		this.k_p = 0.05
 		this.k = player.health*this.k_p;
 		this.mu = 0.4;
+
+		this.p_system = new Emitter(this.loc.x, this.loc.y);
 	}
 
 	update() {
@@ -24,6 +26,10 @@ class Ball {
 		this.loc.add(this.vel);
 
 		this.acl.mult(0);
+
+		this.p_system.position = this.loc.copy();
+		this.p_system.emit(ceil(player.health*3));
+		this.p_system.update();
 	}
 
 	elastic() {
@@ -59,6 +65,16 @@ class Ball {
 	}
 
 	draw() {
+		for (let particle of this.p_system.particles) {
+			if (particle.lifetime > 180) {
+				fill(240, 146, 31, particle.lifetime);
+			} else {
+				fill(240, 177, 31, particle.lifetime);
+			}
+			noStroke();
+			circle(particle.pos.x, particle.pos.y, particle.r);
+		}
+
 		stroke(250);
 		strokeWeight(this.k*100);
 		line(player.loc.x, player.loc.y, this.loc.x, this.loc.y);

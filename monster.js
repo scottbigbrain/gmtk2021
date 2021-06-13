@@ -8,21 +8,22 @@ class Monster {
 		this.size = 20;
 
 		this.spiral = random([-1, 1]);
+		this.close = random(100, 200);
 		this.wander_step = random(-0.5, 0.15);
 	}
 
 	update() {
 		// if close enough move toward the player at a given speed
-		if (this.loc.dist(player.loc) < 350 && this.loc.dist(player.loc) > 150) {
+		if (this.loc.dist(player.loc) < 400 && this.loc.dist(player.loc) > this.close) {
 			let move = player.loc.copy().sub(this.loc).normalize().mult(this.speed);
-			let ang = map(this.loc.dist(player.loc), 150, 350, this.spiral*PI/2, 0) + random(-0.05, 0.05);
+			let ang = map(this.loc.dist(player.loc), this.close, 400, this.spiral*PI/2, 0) + random(-0.05, 0.05);
 			move.rotate(ang);
 			this.vel = move;
 
-			let chance = 0.018;
+			let chance = 0.012;
 			if (random() < chance) this.shoot();
 
-		} else if (this.loc.dist(player.loc) <= 150) {
+		} else if (this.loc.dist(player.loc) <= this.close) {
 			this.vel = p5.Vector.fromAngle(this.spiral*5*PI/8, this.speed*0.8);
 			let chance = 0.012;
 			if (random() < chance) this.shoot();
@@ -63,8 +64,8 @@ class Monster {
 	}
 
 	draw() {
-		fill(200, 50, 10);
-		stroke(150, 10, 0);
+		fill(10, 16, 51);
+		stroke(5, 11, 46);
 		strokeWeight(1);
 		circle(this.loc.x, this.loc.y, this.size);
 	}

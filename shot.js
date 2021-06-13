@@ -33,9 +33,8 @@ class Shot {
 	}
 
 	draw() {
-		fill(150, 200, 250);
-		stroke(50, 50, 200);
-		strokeWeight(1);
+		fill(15, 21, 51);
+		noStroke();
 		circle(this.loc.x, this.loc.y, this.size);
 	}
 
