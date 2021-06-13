@@ -15,14 +15,19 @@ class Monster {
 		// if close enough move toward the player at a given speed
 		if (this.loc.dist(player.loc) < 350 && this.loc.dist(player.loc) > 150) {
 			let move = player.loc.copy().sub(this.loc).normalize().mult(this.speed);
-			let ang = map(this.loc.dist(player.loc), 40, 350, this.spiral*PI/2, 0) + random(-0.05, 0.05);
+			let ang = map(this.loc.dist(player.loc), 150, 350, this.spiral*PI/2, 0) + random(-0.05, 0.05);
 			move.rotate(ang);
 			this.vel = move;
 
-			let chance = 0.015;
+			let chance = 0.018;
 			if (random() < chance) this.shoot();
+		} else if (this.loc.dist(player.loc) <= 150) {
+			this.vel = p5.Vector.fromAngle(this.spiral*5*PI/8, this.speed*0.8);
+			let chance = 0.012;
+			if (random() < chance) this.shoot();
+
 		} else {
-			let move = p5.Vector.fromAngle(noise(frameCount*this.wander_step+this.spiral)*2*PI, this.speed/2);
+			let move = p5.Vector.fromAngle(noise(frameCount*this.wander_step+this.spiral)*2*PI, this.speed*2);
 			this.vel = move;
 		}
 

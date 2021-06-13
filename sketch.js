@@ -1,14 +1,15 @@
 // Game for the GMTK Game Jam 2021. Author: Elijah Buchanan
 
 let scaling = 1;
-let xr = 800;
-let yr = 600;
+let xr = 600;
+let yr = 400;
 let wallr = 15;
 let wall_bounce = 0.6;
 
 let back;
 
 let player;
+let score = 0;
 let camera;
 let ball;
 let monsters = [];
@@ -20,7 +21,7 @@ let shots = [];
 
 
 function setup() {
-	createCanvas(xr, yr);
+	createCanvas(1000, 800);
 	frameRate(30);
 
 	player = new Player();
@@ -68,19 +69,34 @@ function draw() {
 	line( xr,  yr, -xr,  yr);
 	line(-xr,  yr, -xr, -yr);
 
-	rectMode(RIGHT);
+	rectMode(CENTER);
 	fill(250, 50, 50);
 	noStroke();
-	rect(camera.loc.x-60, camera.loc.y+yr/2-40, player.health*120, 20);
+	rect(camera.loc.x, camera.loc.y+height/2-60, player.health*200, 40);
 	stroke(20);
 	strokeWeight(1);
-	line(camera.loc.x+60, camera.loc.y+yr/2-40, camera.loc.x+60, camera.loc.y+yr/2-20);
+	line(camera.loc.x+60, camera.loc.y+height/2-40, camera.loc.x+60, camera.loc.y+height/2-20);
+	line(camera.loc.x-60, camera.loc.y+height/2-40, camera.loc.x-60, camera.loc.y+height/2-20);
 
-	// kill monsters touched by the ball
+
+
+	// kill monsters touched by the ball and add up the score
+	let b = monsters.length;
 	monsters = monsters.filter(m => !m.touchingBall());
+	score += b - monsters.length;
+
 	// get rid of shots touching the walls or ball or player
 	shots = shots.filter(s => !s.atSide() && !s.touchingBall() && !s.touchingPlayer());
 
-	// if (player.health <= 0) noLoop();
+	if (frameCount%120==0 && monsters.length<60) monsters.push(new Monster());
+
+	if (player.health < 0.1) {
+		fill(220, 230, 255);
+		stroke(100);
+		strokeWeight(1.5);
+		textSize(32);
+		textAlign(CENTER);
+		text("Game Over", camera.loc.x, camera.loc.y);
+	}
 
 }

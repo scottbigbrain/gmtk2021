@@ -60,11 +60,11 @@ class Ball {
 
 	draw() {
 		stroke(250);
-		strokeWeight(2);
+		strokeWeight(this.k*100);
 		line(player.loc.x, player.loc.y, this.loc.x, this.loc.y);
 
 		fill(255, 132, 10);
-		strokeWeight(1);
+		strokeWeight(4);
 		stroke(200, 100, 100);
 		circle(this.loc.x, this.loc.y, this.size);
 	}

@@ -23,9 +23,9 @@ class Player {
 		this.moving = false;
 		this.controls();
 
-		if (this.touchingShot() && this.health > 0) {
-			this.health -= 0.2;
-			fill(255);
+		if (this.touchingShot() && this.health >= 0.1) {
+			this.health -= 0.1;
+			fill(255, 200, 200, 100);
 			noStroke();
 			rectMode(CENTER);
 			rect(0, 0, 2*xr, 2*yr);
