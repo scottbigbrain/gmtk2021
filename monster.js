@@ -21,6 +21,7 @@ class Monster {
 
 			let chance = 0.018;
 			if (random() < chance) this.shoot();
+
 		} else if (this.loc.dist(player.loc) <= 150) {
 			this.vel = p5.Vector.fromAngle(this.spiral*5*PI/8, this.speed*0.8);
 			let chance = 0.012;

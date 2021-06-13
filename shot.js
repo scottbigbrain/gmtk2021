@@ -3,7 +3,7 @@ class Shot {
 	constructor(x, y, ang) {
 		this.loc = createVector(x, y);
 		this.vel = p5.Vector.fromAngle(ang, 16);
-		this.size = 10;
+		this.size = 12;
 	}
 
 	update() {
