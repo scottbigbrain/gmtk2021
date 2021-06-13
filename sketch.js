@@ -70,13 +70,13 @@ function draw() {
 	line(-xr,  yr, -xr, -yr);
 
 	rectMode(CENTER);
-	fill(250, 50, 50);
+	fill(50, 160, 60);
 	noStroke();
-	rect(camera.loc.x, camera.loc.y+height/2-60, player.health*200, 40);
+	rect(camera.loc.x, camera.loc.y+height/2-40, player.health*200, 40);
 	stroke(20);
 	strokeWeight(1);
-	line(camera.loc.x+60, camera.loc.y+height/2-40, camera.loc.x+60, camera.loc.y+height/2-20);
-	line(camera.loc.x-60, camera.loc.y+height/2-40, camera.loc.x-60, camera.loc.y+height/2-20);
+	line(camera.loc.x+100, camera.loc.y+height/2-60, camera.loc.x+100, camera.loc.y+height/2-20);
+	line(camera.loc.x-100, camera.loc.y+height/2-60, camera.loc.x-100, camera.loc.y+height/2-20);
 
 
 
